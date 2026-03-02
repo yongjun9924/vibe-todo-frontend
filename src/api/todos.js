@@ -1,8 +1,11 @@
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL ||
-  "https://vibe-todo-backend-andy-6a2ce2375794.herokuapp.com/api/todos";
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "";
 
 async function request(path, options = {}) {
+  if (!API_BASE) {
+    throw new Error(
+      "API 주소가 설정되지 않았습니다. .env에 VITE_API_BASE_URL을 넣어 주세요."
+    );
+  }
   const url = path.startsWith("http") ? path : `${API_BASE}${path}`;
   const res = await fetch(url, {
     headers: { "Content-Type": "application/json", ...options.headers },
